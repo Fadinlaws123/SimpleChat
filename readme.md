@@ -1,81 +1,70 @@
+<div align="center">
+
 # 💬 SimpleChat
 
-A sleek, modern, and fully customizable **chat system for FiveM** — built by *SimpleDevelopments*.
-This chat isn’t just a replacement — it’s an upgrade. It supports message templates, embedded icons, inline messages, Discord logging, custom command systems, and smooth NUI transitions.
+### A modern, customizable standalone chat replacement for FiveM.
+
+<p>
+  <a href="https://simpledevelopments.org/store"><img src="https://img.shields.io/badge/Explore_Our_Store-5865F2?style=for-the-badge&logo=googlechrome&logoColor=white" /></a>
+  <a href="https://discord.gg/RquDVTfDwu"><img src="https://img.shields.io/badge/Join_Our_Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" /></a>
+  <a href="https://github.com/Fadinlaws123/SimpleChat"><img src="https://img.shields.io/badge/View_on_GitHub-181717?style=for-the-badge&logo=github&logoColor=white" /></a>
+</p>
+
+<p>
+  <img src="https://img.shields.io/badge/FiveM-Standalone-FF6B35?style=flat-square&logo=fivem&logoColor=white" />
+  <img src="https://img.shields.io/badge/Framework-No_Dependency-238636?style=flat-square" />
+  <img src="https://img.shields.io/badge/Status-Release_Ready-238636?style=flat-square" />
+  <img src="https://img.shields.io/github/stars/Fadinlaws123/SimpleChat?style=flat-square&logo=github&label=Stars" />
+</p>
+
+</div>
 
 ---
 
-## 🧩 Features
+## 📖 About
 
-* 🖥️ **Modern UI** — Tablet-style transparent chat window with blurred background.
-* 💡 **Built-In Commands** — `/me`, `/do`, `/gme`, `/ooc` (toggleable individually via config).
-* ⚙️ **Fully Configurable** — Everything from colors to built-ins, webhook, bot details, etc.
-* 🔗 **Custom Exports** — Trigger inline or template messages from *any* other script.
-* 🪄 **Discord Webhook Logging** — Automatically logs all chat commands with identifiers.
-* 🔍 **Command Suggestions** — Dynamically synced for all players and resources.
-* 🧱 **Lightweight & Optimized** — 0.00ms idle, runs clean even under heavy chat load.
+**SimpleChat** is a standalone FiveM chat system built around a modern NUI interface, configurable roleplay commands, custom message templates, external resource exports, and optional Discord logging.
+
+It can be used as a full chat replacement while also providing reusable exports for other resources that need to display styled messages or send related logs.
 
 ---
 
-## 📁 Configuration
+## ✨ Features
 
-Located in `config.lua`:
-
-```lua
-Config = {
-    Debug = false,
-
-    -- Webhook settings
-    EnableDiscordLogging = true,
-    WebhookURL = "YOUR_WEBHOOK_URL_HERE",
-    BotName = "SimpleChat Logger",
-    BotAvatar = "https://i.imgur.com/VZLrHkZ.png",
-
-    -- Built-in chat commands (toggle individually)
-    BuiltInCommands = {
-        me = true,
-        ['do'] = true,
-        gme = true,
-        ooc = true
-    },
-
-    -- Header order for visible /commands
-    CommandDisplayOrder = { "me", "do", "gme", "ooc" },
-
-    -- Delay before syncing suggestions when joining
-    SuggestionSyncDelay = 2500,
-
-    -- Embed colors per type (for Discord logs)
-    EmbedColors = {
-        me = 0xB366FF,
-        ['do'] = 0x60A5FA,
-        gme = 0xEC4899,
-        ooc = 0x9CA3AF,
-        text = 0x60A5FA
-    }
-}
-```
+- Modern custom NUI chat interface
+- Built-in `/me`, `/do`, `/gme`, and `/ooc` commands
+- Individually toggleable built-in commands
+- Dynamic command suggestions
+- Custom template-style messages
+- Inline chat messages
+- Discord webhook logging
+- Configurable embed colors and webhook settings
+- Exports for other FiveM resources
+- Standalone with no ESX, QBCore, or NDCore dependency
 
 ---
 
-## ⚙️ Exports
+## ⚙️ Configuration
 
-SimpleChat includes **powerful exports** that let other scripts interact with chat seamlessly.
+Configuration is handled through `config.lua`, including:
 
-### 🧾 `SendTemplateMessage(data)`
+- Debug mode
+- Discord logging
+- Webhook URL and bot appearance
+- Built-in command toggles
+- Command display order
+- Suggestion sync delay
+- Discord embed colors
 
-Creates a **card-style message** (like a 911 or dispatch alert).
+Keep live webhook URLs private and do not commit them to a public repository.
 
-**Parameters:**
+---
 
-| Field     | Type     | Description               |
-| --------- | -------- | ------------------------- |
-| `icon`    | `string` | Emoji or FontAwesome icon |
-| `title`   | `string` | Message header title      |
-| `message` | `string` | Main message text         |
-| `color`   | `table`  | RGB table `{r, g, b}`     |
+## 🔌 Exports
 
-**Example:**
+### `SendTemplateMessage(data)`
+
+Displays a card-style message through SimpleChat.
 
 ```lua
 exports['SimpleChat']:SendTemplateMessage({
@@ -86,135 +75,63 @@ exports['SimpleChat']:SendTemplateMessage({
 })
 ```
 
----
+### `SendInlineMessage(data)`
 
-### 💭 `SendInlineMessage(data)`
-
-Sends a **chat-style bubble message** with a custom icon and color (matches `/me`, `/do` style).
-
-**Parameters:**
-
-| Field   | Type     | Description               |
-| ------- | -------- | ------------------------- |
-| `name`  | `string` | Name or source label      |
-| `icon`  | `string` | Emoji or FontAwesome icon |
-| `text`  | `string` | Chat message content      |
-| `color` | `table`  | RGB table `{r, g, b}`     |
-
-**Example:**
+Displays a compact inline chat message.
 
 ```lua
 exports['SimpleChat']:SendInlineMessage({
     name = 'News',
     icon = '📰',
-    text = 'Breaking: City council passed new laws today!',
+    text = 'Breaking news from across the city.',
     color = {80, 180, 255}
 })
 ```
 
----
+### `SendDiscordLog(data)`
 
-### 📡 `SendDiscordLog(data)`
-
-Sends a Discord embed log with your configured webhook and formatting.
-
-**Parameters:**
-
-| Field        | Type     | Description                                      |
-| ------------ | -------- | ------------------------------------------------ |
-| `playerId`   | `number` | Player source ID (optional if `playerName` used) |
-| `playerName` | `string` | Fallback name if no player                       |
-| `title`      | `string` | Embed title                                      |
-| `command`    | `string` | Command or context name                          |
-| `message`    | `string` | Message contents                                 |
-| `color`      | `number` | Embed color (hex)                                |
-
-**Example:**
+Sends a formatted Discord log through the webhook configured by SimpleChat.
 
 ```lua
 exports['SimpleChat']:SendDiscordLog({
     playerId = source,
-    title = "911 Command Used",
-    command = "/911",
-    message = "Shots fired near Legion Square",
-    color = 0xFF3030
+    title = 'Command Used',
+    command = '/example',
+    message = 'Example message',
+    color = 0x60A5FA
 })
 ```
 
 ---
 
-## 🧠 Example Custom Commands
+## 📥 Installation
 
-Use these examples to quickly create commands that show messages via SimpleChat:
+1. Place `SimpleChat` in your server's resources directory.
+2. Configure `config.lua`.
+3. Add the following to your `server.cfg`:
 
-```lua
--- /911 <message>
-RegisterCommand('911', function(source, args)
-    local msg = table.concat(args, " ")
-    if msg == "" then
-        TriggerClientEvent('chat:addMessage', source, {
-            args = {"SYSTEM", "Usage: /911 <message>"},
-            color = {255, 0, 0}
-        })
-        return
-    end
-
-    exports['SimpleChat']:SendTemplateMessage({
-        icon = '🚨',
-        title = '911 Call',
-        message = msg,
-        color = {255, 45, 45}
-    })
-
-    exports['SimpleChat']:SendDiscordLog({
-        playerId = source,
-        title = "911 Command Used",
-        command = "/911",
-        message = msg,
-        color = 0xFF3030
-    })
-end)
+```cfg
+ensure SimpleChat
 ```
 
----
-
-## 💬 Example `/news` Inline Command
-
-```lua
-RegisterCommand('news', function(source, args)
-    local msg = table.concat(args, " ")
-    if msg == "" then
-        TriggerClientEvent('chat:addMessage', source, {
-            args = {"SYSTEM", "Usage: /news <message>"},
-            color = {80, 180, 255}
-        })
-        return
-    end
-
-    exports['SimpleChat']:SendInlineMessage({
-        name = 'News',
-        icon = '📰',
-        text = msg,
-        color = {80, 180, 255}
-    })
-end)
-```
+4. Restart the resource or server.
 
 ---
 
-## 🧱 Developer Notes
+## 📋 Requirements
 
-* Message templates render safely (HTML args are escaped).
-* Commands support full Unicode (emojis, symbols, etc.).
-* You can expand exports into jobs, dispatch systems, admin alerts, or event logs.
-* Works standalone — no dependency on ESX/QBCore/NDCore.
-
----
-
-## 🧩 Credits
-
-Built with ❤️ by **SimpleDevelopments**
-[https://simpledevelopments.org](https://simpledevelopments.org)
-Discord: [SimpleDevelopments](https://discord.gg/simpledev)
+- FiveM server
+- No framework required
+- No database required
 
 ---
+
+## 🌐 SimpleDevelopments
+
+SimpleChat is developed and maintained by **SimpleDevelopments**.
+
+<div align="center">
+
+### Keep it Simple. Keep it SimpleDevelopments.
+
+</div>
